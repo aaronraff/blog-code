@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"strings"
 	"testing"
 )
@@ -37,8 +36,7 @@ func TestBasicTokens(t *testing.T) {
 	input := "+-*/="
 	expected := []Token{ADD, SUB, MUL, DIV, ASSIGN}
 
-	sReader := strings.NewReader(input)
-	reader := bufio.NewReader(sReader)
+	reader := strings.NewReader(input)
 	l := NewLexer(reader)
 	tokens := getTokens(l)
 	compareOutput(t, tokens, expected)
@@ -49,15 +47,14 @@ func TestIntToken(t *testing.T) {
 		input    string
 		expected []Token
 	}{
-		{"123+23 ", []Token{INT, ADD, INT}},
-		{"11111111010100- ", []Token{INT, SUB}},
-		{"24593753790175972954 5439574375348 ", []Token{INT, INT}},
-		{"213one ", []Token{INT, IDENT}},
+		{"123+23", []Token{INT, ADD, INT}},
+		{"11111111010100-", []Token{INT, SUB}},
+		{"24593753790175972954 5439574375348", []Token{INT, INT}},
+		{"213one", []Token{INT, IDENT}},
 	}
 
 	for _, c := range cases {
-		sReader := strings.NewReader(c.input)
-		reader := bufio.NewReader(sReader)
+		reader := strings.NewReader(c.input)
 		l := NewLexer(reader)
 		tokens := getTokens(l)
 		compareOutput(t, tokens, c.expected)
@@ -69,15 +66,14 @@ func TestIdentToken(t *testing.T) {
 		input    string
 		expected []Token
 	}{
-		{"testIdent ", []Token{IDENT}},
-		{"ill)egal ", []Token{IDENT, ILLEGAL, IDENT}},
-		{"ill.egal ", []Token{IDENT, ILLEGAL, IDENT}},
-		{"one two ", []Token{IDENT, IDENT}},
+		{"testIdent", []Token{IDENT}},
+		{"ill)egal", []Token{IDENT, ILLEGAL, IDENT}},
+		{"ill.egal", []Token{IDENT, ILLEGAL, IDENT}},
+		{"one two", []Token{IDENT, IDENT}},
 	}
 
 	for _, c := range cases {
-		sReader := strings.NewReader(c.input)
-		reader := bufio.NewReader(sReader)
+		reader := strings.NewReader(c.input)
 		l := NewLexer(reader)
 		tokens := getTokens(l)
 		compareOutput(t, tokens, c.expected)

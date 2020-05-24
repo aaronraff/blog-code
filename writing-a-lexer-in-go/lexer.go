@@ -56,10 +56,10 @@ type Lexer struct {
 	reader *bufio.Reader
 }
 
-func NewLexer(reader *bufio.Reader) *Lexer {
+func NewLexer(reader io.Reader) *Lexer {
 	return &Lexer{
 		pos:    Position{line: 1, column: 0},
-		reader: reader,
+		reader: bufio.NewReader(reader),
 	}
 }
 
@@ -140,7 +140,6 @@ func (l *Lexer) lexInt() string {
 		if err != nil {
 			if err == io.EOF {
 				// at the end of the int
-				l.backup()
 				return lit
 			}
 		}
@@ -165,7 +164,6 @@ func (l *Lexer) lexIdent() string {
 		if err != nil {
 			if err == io.EOF {
 				// at the end of the identifier
-				l.backup()
 				return lit
 			}
 		}
@@ -187,8 +185,7 @@ func main() {
 		panic(err)
 	}
 
-	reader := bufio.NewReader(file)
-	lexer := NewLexer(reader)
+	lexer := NewLexer(file)
 	for {
 		pos, tok, lit := lexer.Lex()
 		if tok == EOF {
