@@ -107,6 +107,7 @@ func (l *Lexer) Lex() (Position, Token, string) {
 				lit := l.lexInt()
 				return startPos, INT, lit
 			} else if unicode.IsLetter(r) {
+				// backup and let lexIdent rescan the beginning of the ident
 				startPos := l.pos
 				l.backup()
 				lit := l.lexIdent()
